@@ -1,0 +1,61 @@
+name: FastAPI CI/CD
+
+on:
+    # Trigger the workflow on push or pull request,
+    push:
+        branches:
+        # Push events to master branch
+        - master
+
+# The Job defines the steps that the workflow will perform that execute on the runner
+
+jobs:
+
+    CI:
+        # Define the type of runner that the job will run on
+        runs-on: ubuntu-latest
+        steps:
+            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it's content
+            - uses: actions/checkout@v2
+
+            # Step-1 Setup Python
+            - name: Setup Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: '3.12.9'
+
+            # Step-2 Install Python Virtual Environment
+            - name: Install Python Virtual Environment
+              run: pip3 install virtualenv
+
+            # Step-3 Setup Virtual Environment
+            # https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
+            - name: Virtual Environment
+              uses: actions/cache@v2
+              id: cache-venv
+              with:
+                path: venv
+                # This cache key depends on requirements.txt
+                key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
+                restore-keys: |
+                  ${{ runner.os }}-venv-
+
+            # Step-4 Build a virtual environment and if it doesn't exist, create it
+            - name : Activate Virtual Environment
+              run: |
+                python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+
+            - name: Run Tests
+              # Note that you have to activate the virtual environment before running the tests
+              run: .venv/bin/activate && pytest
+            - name: Create archive of dependencies
+              run: |
+                cd .venv/lib/python3.12/site-packages
+                zip -r9 ../../../../api.zip .
+            - name: Upload artifact
+              # Upload the archive of dependencies as an artifact from your workflow allowing you to share data between jobs in a workflow
+              # Store data once a workflow is complete and download data to use in subsequent workflows
+              uses: actions/upload-artifact@v2
+              with:
+                name: api
+                path: api.zip
