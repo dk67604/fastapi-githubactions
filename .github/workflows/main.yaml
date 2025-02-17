@@ -31,7 +31,7 @@ jobs:
             # Step-3 Setup Virtual Environment
             # https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
             - name: Virtual Environment
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               id: cache-venv
               with:
                 path: venv
