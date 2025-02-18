@@ -4,8 +4,10 @@ on:
     # Trigger the workflow on push or pull request,
     push:
         branches:
+            - master
+        paths-ignore:
+            - 'README.md'
         # Push events to master branch
-        - master
 
 # The Job defines the steps that the workflow will perform that execute on the runner
 env:
