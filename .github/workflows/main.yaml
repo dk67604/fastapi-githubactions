@@ -43,7 +43,7 @@ jobs:
             # Step-4 Build a virtual environment and if it doesn't exist, create it
             - name : Activate Virtual Environment
               run: |
-                python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+                python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
 
             - name: Run Tests
               # Note that you have to activate the virtual environment before running the tests
