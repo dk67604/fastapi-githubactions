@@ -60,7 +60,7 @@ jobs:
                 zip -r9 ../../../../api.zip .
             - name: Add API files to Zip file
               run: |
-                cd ./api && zip -g ../../api.zip -r .
+                cd ./api && zip -g ../api.zip -r .
             - name: Upload zip file artifact
               # Upload the archive of dependencies as an artifact from your workflow allowing you to share data between jobs in a workflow
               # Store data once a workflow is complete and download data to use in subsequent workflows
