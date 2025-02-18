@@ -47,7 +47,7 @@ jobs:
 
             - name: Run Tests
               # Note that you have to activate the virtual environment before running the tests
-              run: .venv/bin/activate && pytest
+              run: source .venv/bin/activate && pytest
             - name: Create archive of dependencies
               run: |
                 cd .venv/lib/python3.12/site-packages
